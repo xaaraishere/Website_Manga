@@ -1,0 +1,247 @@
+<?php
+include 'config.php';
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manga List</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: poppins, sans-serif;
+            background-color: #d9b4af;
+            color: #fff;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        nav .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        nav .logo img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        nav .menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav .menu a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        nav .menu a:hover {
+            background-color: #555;
+        }
+
+        nav input[type="text"] {
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: url('hero-image.jpg') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+        }
+
+        /* Manga Cards Section */
+        .manga-list {
+            padding: 20px;
+            background-color: #8f6060;
+        }
+
+        .manga-list h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .manga-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .card h3 {
+            font-size: 16px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .card p {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+        .hero {
+            background: url('bganime.jpg') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        /* Interested Section */
+        .interested {
+            padding: 20px;
+            background-color: #d9d9d9;
+            text-align: center;
+        }
+
+        .interested h2 {
+            margin-bottom: 10px;
+        }
+
+        .dropdown {
+            margin: 10px auto;
+            max-width: 300px;
+        }
+
+        .dropdown select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer .socials {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        footer .socials img {
+            width: 30px;
+            height: 30px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+    <div class="logo">
+            <img src="images/original.png" alt="Logo">
+            <span>MangaVERSE</span>
+        </div>
+        <div class="search">
+            <input type="text" placeholder="Search Manga">
+        </div>
+        <div class="menu">
+            <a href="index.html">HOME</a>
+            <a href="manga.html">MANGA</a>
+            <a href="transaksi.html">Subscribe</a>
+            <a href="#">HELP</a>
+            <a href="login.html" style="background-color: #555; padding: 10px 15px; border-radius: 5px;">Register</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>Welcome to MangaVERSE</h1>
+    </div>
+
+    <div class="manga-list">
+        <h2>List Of Manga</h2>
+    </div>
+    <div class="manga-cards">
+        <?php
+        $sql = "SELECT * FROM manga";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo '<div class="card">';
+                echo '<img src="' . $row["image"] . '" alt="' . $row["title"] . '">';
+                echo '<h3>' . $row["title"] . '</h3>';
+                echo '<p>' . $row["description"] . '</p>';
+                echo '<p><strong>IDR ' . number_format($row["price"], 0, ',', '.') . '</strong></p>';
+                echo '</div>';
+            }
+        } else {
+            echo "<p>Tidak ada manga tersedia.</p>";
+        }
+
+        $conn->close();
+        ?>
+    </div>
+
+    <div class="interested">
+        <h2>Interested in Buying</h2>
+        <div class="dropdown">
+            <select>
+                <option>Title 1</option>
+                <option>Title 2</option>
+                <option>Title 3</option>
+            </select>
+        </div>
+    </div>
+
+    <footer>
+        <div class="socials">
+            <img src="icon-facebook.png" alt="Facebook">
+            <img src="icon-twitter.png" alt="Twitter">
+            <img src="icon-instagram.png" alt="Instagram">
+        </div>
+        <p>About Us | Contact | Privacy Policy</p>
+    </footer>
+</body>
+</html>
+
+
