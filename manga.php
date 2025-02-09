@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include './koneksi/config.php';
 ?>
 
 <!DOCTYPE html>
@@ -26,24 +26,60 @@ include 'config.php';
             padding: 10px 20px;
         }
 
-        nav .logo {
+        .logo {
             display: flex;
             align-items: center;
         }
 
-        nav .logo img {
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
+        .logo img {
+            border-radius: 60%;
+            width: 50px;
+            height: 50px;
             margin-right: 10px;
         }
 
-        nav .menu {
+        .nav-container {
             display: flex;
-            gap: 15px;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
         }
 
-        nav .menu a {
+        .search-bar {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-bar input {
+            width: 300px;
+            padding: 8px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        .search-bar button {
+            padding: 8px 12px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #777;
+        }
+
+        .menu {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .menu a {
             text-decoration: none;
             color: #fff;
             font-size: 16px;
@@ -51,29 +87,13 @@ include 'config.php';
             border-radius: 5px;
         }
 
-        nav .menu a:hover {
+        .menu a:hover {
             background-color: #555;
         }
 
-        nav input[type="text"] {
-            padding: 5px;
-            border-radius: 5px;
-            border: none;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: url('hero-image.jpg') no-repeat center center/cover;
-            height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 48px;
+        /* Agar konten tidak tertutup navbar */
+        .content {
+            padding-top: 70px;
         }
 
         /* Manga Cards Section */
@@ -89,8 +109,26 @@ include 'config.php';
 
         .manga-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .manga-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .manga-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .manga-cards {
+                grid-template-columns: repeat(1, 1fr);
+            }
         }
 
         .card {
@@ -98,6 +136,8 @@ include 'config.php';
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding-bottom: 15px;
         }
 
         .card img {
@@ -108,140 +148,101 @@ include 'config.php';
         .card h3 {
             font-size: 16px;
             margin: 10px;
-            text-align: center;
+            color: black;
         }
 
         .card p {
-            text-align: center;
             font-size: 14px;
             color: #555;
         }
-        .hero {
-            background: url('bganime.jpg') no-repeat center center/cover;
-            height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            text-align: center;
-        }
 
-        /* Interested Section */
-        .interested {
-            padding: 20px;
-            background-color: #d9d9d9;
-            text-align: center;
-        }
-
-        .interested h2 {
-            margin-bottom: 10px;
-        }
-
-        .dropdown {
-            margin: 10px auto;
-            max-width: 300px;
-        }
-
-        .dropdown select {
-            width: 100%;
+        .card button {
+            display: block;
+            width: 80%;
             padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        /* Footer */
-        footer {
+            margin: 5px auto;
             background-color: #333;
             color: #fff;
-            text-align: center;
-            padding: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        footer .socials {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 10px;
+        .card button:hover {
+            background-color: #555;
         }
 
-        footer .socials img {
-            width: 30px;
-            height: 30px;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 14px;
+        .card:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
         }
     </style>
 </head>
 <body>
+
+<header>
     <nav>
-    <div class="logo">
-            <img src="images/original.png" alt="Logo">
-            <span>MangaVERSE</span>
-        </div>
-        <div class="search">
-            <input type="text" placeholder="Search Manga">
-        </div>
-        <div class="menu">
-            <a href="index.html">HOME</a>
-            <a href="manga.html">MANGA</a>
-            <a href="transaksi.html">Subscribe</a>
-            <a href="#">HELP</a>
-            <a href="login.html" style="background-color: #555; padding: 10px 15px; border-radius: 5px;">Register</a>
+        <div class="nav-container">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="images/original.png" alt="Logo">
+                <span>MangaVERSE</span>
+            </div>
+
+            <!-- Search Bar di Tengah -->
+            <form class="search-bar" action="manga.php" method="GET">
+                <input type="text" name="search" placeholder="Cari manga...">
+                <button type="submit">Search</button>
+            </form>
+
+            <!-- Menu -->
+            <div class="menu">
+                <a href="index.php">HOME</a>
+                <a href="manga.php">MANGA</a>
+                <a href="transaksi.php">BUY</a>
+                <a href="help.php">HELP</a>
+                <a href="login.php" style="background-color: #555; padding: 10px 15px; border-radius: 5px;">Register/Login</a>
+            </div>
         </div>
     </nav>
+</header>
 
-    <div class="hero">
-        <h1>Welcome to MangaVERSE</h1>
-    </div>
-
-    <div class="manga-list">
-        <h2>List Of Manga</h2>
+<div class="content">
+    
+<div class="manga-list">
+    <h2>List Of Manga</h2>
     </div>
     <div class="manga-cards">
         <?php
-        $sql = "SELECT * FROM manga";
-        $result = $conn->query($sql);
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
 
+        // Query SQL
+        if ($search) {
+            $sql = "SELECT * FROM manga WHERE title LIKE '%$search%'";
+        } else {
+            $sql = "SELECT * FROM manga";
+        }
+
+        $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                echo '<div class="card">';
-                echo '<img src="' . $row["image"] . '" alt="' . $row["title"] . '">';
-                echo '<h3>' . $row["title"] . '</h3>';
-                echo '<p>' . $row["description"] . '</p>';
-                echo '<p><strong>IDR ' . number_format($row["price"], 0, ',', '.') . '</strong></p>';
+                echo '<div class="card" style="background-image: url(' . $row["image"] . '); background-size: cover; background-position: center;">';
+                echo '<div style="background-color: rgba(0, 0, 0, 0.5); padding: 10px;">';
+                echo '<h3 style="color: white;">' . $row["title"] . '</h3>';
+                echo '<p style="color: white;"><strong>IDR ' . number_format($row["price"], 0, ',', '.') . '</strong></p>';
+                echo '<button class="zoom-button" onclick="window.location.href=\'beli.php?id=' . $row["id"] . '\'">Beli</button>';
+                echo '<button class="zoom-button" onclick="window.location.href=\'listmanga.php?id=' . $row["id"] . '\'">Baca</button>';
+
+                echo '</div>';
                 echo '</div>';
             }
         } else {
-            echo "<p>Tidak ada manga tersedia.</p>";
+            echo "<p>Tidak ada manga ditemukan.</p>";
         }
-
         $conn->close();
         ?>
     </div>
+</div>
 
-    <div class="interested">
-        <h2>Interested in Buying</h2>
-        <div class="dropdown">
-            <select>
-                <option>Title 1</option>
-                <option>Title 2</option>
-                <option>Title 3</option>
-            </select>
-        </div>
-    </div>
-
-    <footer>
-        <div class="socials">
-            <img src="icon-facebook.png" alt="Facebook">
-            <img src="icon-twitter.png" alt="Twitter">
-            <img src="icon-instagram.png" alt="Instagram">
-        </div>
-        <p>About Us | Contact | Privacy Policy</p>
-    </footer>
 </body>
 </html>
-
-
