@@ -4,10 +4,6 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 ?>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,7 +153,7 @@ if (session_status() == PHP_SESSION_NONE) {
 <body>
 
 
-<nav>
+<nav>   
     <div class="logo">
         <img src="../images/original.png" alt="Logo">
         <span>MangaVERSE</span>
