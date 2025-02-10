@@ -1,7 +1,7 @@
 <?php
 include './koneksi/config.php';
 ?>
-/* KODE TUMBAL COBA COBA */
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
