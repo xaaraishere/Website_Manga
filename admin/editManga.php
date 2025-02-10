@@ -2,7 +2,7 @@
 
 include '../koneksi/config.php';
 
-// Ambil data manga berdasarkan ID
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $stmt = $conn->prepare("SELECT * FROM manga WHERE id = ?");
@@ -12,23 +12,23 @@ if (isset($_GET['id'])) {
     $manga = $result->fetch_assoc();
 }
 
-// Simpan perubahan jika form disubmit
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $price = $_POST['price'];
-    $image_path = $manga['image']; // Ambil gambar lama sebagai default
+    $image_path = $manga['image'];
 
-    // Cek apakah gambar diubah
+
     if (!empty($_FILES["image"]["name"])) {
-        $target_dir = "../images/"; // Folder penyimpanan
+        $target_dir = "../images/";
         $image_name = time() . "_" . basename($_FILES["image"]["name"]);
         $target_file = $target_dir . $image_name;
-        $image_path = "images/" . $image_name; // Path yang disimpan di database
+        $image_path = "images/" . $image_name;
 
-        // Pindahkan file ke folder
+
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            // Hapus gambar lama jika ada
+
             if (!empty($manga['image']) && file_exists("../" . $manga['image'])) {
                 unlink("../" . $manga['image']);
             }
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Query update
+
     $stmt = $conn->prepare("UPDATE manga SET title=?, image=?, description=?, price=? WHERE id=?");
     $stmt->bind_param("sssdi", $title, $image_path, $description, $price, $id);
 
@@ -206,8 +206,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button>Search</button>
         </div>
         <nav>
-                <a href="add_manga.php">ADD</a>
+                <a href="index.php">HOME</a>
                 <a href="viewmanga.php">MANGA LIST</a>
+                <a href="viewread.php">LIST READ</a>
                 <a href="viewhelp.php">HELP</a>
         </nav>
         <div class="auth-buttons">

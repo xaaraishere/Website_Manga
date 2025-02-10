@@ -1,5 +1,5 @@
 <?php
-include 'koneksi/config.php'; // Sesuaikan dengan koneksi database
+include 'koneksi/config.php';
 
 ?>
 
@@ -213,6 +213,7 @@ include 'koneksi/config.php'; // Sesuaikan dengan koneksi database
             <a href="manga.php">MANGA</a>
             <a href="transaksi.php">BUY</a>
             <a href="help.php">HELP</a>
+            <a href="login.php" style="background-color: #555; padding: 10px 15px; border-radius: 5px;">Register/Login</a>
         </nav>
     </header>
 
@@ -249,7 +250,7 @@ include 'koneksi/config.php'; // Sesuaikan dengan koneksi database
     </div>
 
     <footer>
-        &copy; 2025 MangaReader. All Rights Reserved.
+        &copy; 2025 MangaVERSE. All Rights Reserved.
     </footer>
 </body>
 </html>

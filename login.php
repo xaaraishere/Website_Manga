@@ -1,31 +1,71 @@
+<?php
+session_start();
+include './koneksi/config.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $role = $_POST['role']; // Ambil pilihan role (user/admin)
+
+    if ($role == "user") {
+        $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
+    } else {
+        $stmt = $conn->prepare("SELECT id, password FROM admins WHERE email = ?");
+    }
+
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($id, $hashed_password);
+        $stmt->fetch();
+
+        if (password_verify($password, $hashed_password)) {
+            if ($role == "user") {
+                $_SESSION['user_id'] = $id;
+                $_SESSION['user_email'] = $email;
+                echo "<script>alert('Login User Berhasil!'); window.location.href='user/index.php';</script>";
+            } else {
+                $_SESSION['admin_id'] = $id;
+                $_SESSION['admin_email'] = $email;
+                echo "<script>alert('Login Admin Berhasil!'); window.location.href='admin/index.php';</script>";
+            }
+        } else {
+            echo "<script>alert('Password salah!'); window.location.href='login.php';</script>";
+        }
+    } else {
+        echo "<script>alert('Email tidak ditemukan!'); window.location.href='login.php';</script>";
+    }
+
+    $stmt->close();
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Login</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
         body {
+            margin: 0;
+            font-family: poppins, sans-serif;
             background: url('images/bganime.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
         }
 
         nav {
-            width: 100%;
-            height: 60px;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: #333;
+            color: #fff;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            align-items: center;
+            padding: 10px 20px;
         }
 
         .logo {
@@ -34,37 +74,35 @@
         }
 
         .logo img {
-            height: 40px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
             margin-right: 10px;
         }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        .search-bar {
+        .menu {
             display: flex;
+            gap: 15px;
             align-items: center;
         }
 
-        .search-bar input {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-right: 10px;
+        .menu a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .menu a:hover {
+            background-color: #555;
         }
 
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 60px);
+            height: 100vh;
         }
 
         .login-form {
@@ -81,7 +119,7 @@
             margin-bottom: 20px;
         }
 
-        .login-form input {
+        .login-form input, .login-form select {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -103,100 +141,36 @@
         .login-form button:hover {
             background-color: #555;
         }
-
-        .login-form .remember {
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            margin-bottom: 10px;
-        }
-
-        .login-form .remember input {
-            width: auto;
-            margin-right: 5px;
-        }
-
-        .login-form .forgot-password {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        .login-form .forgot-password a {
-            color: #333;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .login-form .forgot-password a:hover {
-            text-decoration: underline;
-        }
     </style>
 </head>
 <body>
     <nav>
         <div class="logo">
-            <img src="images/original.png" alt="logo">
-            <a href="index.php">MangaVERSE</a>
+            <img src="images/original.png" alt="Logo">
+            <span>MangaVERSE</span>
         </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search Manga">
+        <div class="menu">
             <a href="index.php">HOME</a>
             <a href="manga.php">MANGA</a>
             <a href="transaksi.php">BUY</a>
             <a href="help.php">HELP</a>
-            <a href="registrasi.php">Register</a>
+            <a href="registrasi.php">REGISTER</a>
         </div>
     </nav>
 
     <div class="login-container">
         <div class="login-form">
-            <h2>Sign In</h2>
+            <h2>LOGIN</h2>
             <form action="login.php" method="post">
-    <div class="email">
-        <label for="email">Email</label>
-        <input type="email" name="email" placeholder="ex : qwerty@gmail.com" required>
-    </div>
-    <div class="password">
-        <label for="password">Password</label>
-        <input type="password" name="password" placeholder="Password" required>
-    </div>
-    <button type="submit">Login</button>
-        </form>
+                <select name="role" required>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">LOGIN</button>
+            </form>
         </div>
     </div>
-
-    <?php
-session_start();  
-include 'config.php';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($id, $hashed_password);
-    $stmt->fetch();
-
-    if ($stmt->num_rows > 0) {
-        if (password_verify($password, $hashed_password)) {
-            $_SESSION['user_id'] = $id;
-            $_SESSION['email'] = $email;
-            header("Location: dashboard.php"); 
-            exit();
-        } else {
-            echo "Password salah.";
-        }
-    } else {
-        echo "Email tidak ditemukan.";
-    }
-
-    $stmt->close();
-}
-
-$conn->close();
-?>
 </body>
 </html>

@@ -126,10 +126,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>MangaVERSE</h1>
     </div>
     <nav>
-        <a href="index.php">Home</a>
-        <a href="manga.php">Manga</a>
-        <a href="transaksi.php">Buy</a>
-        <a href="help.php">Help</a>
+        <a href="index.php">HOME</a>
+        <a href="manga.php">MANGA</a>
+        <a href="transaksi.php">BUY</a>
+        <a href="help.php">HELP</a>
+        <a href="login.php" style="background-color: #555; padding: 10px 15px; border-radius: 5px;">Register/Login</a>
     </nav>
 </header>
 

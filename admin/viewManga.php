@@ -191,6 +191,7 @@ if (isset($_GET['delete'])) {
             <button>Search</button>
         </div>
         <nav>
+                <a href="index.php">HOME</a>
                 <a href="viewmanga.php">MANGA LIST</a>
                 <a href="viewread.php">LIST READ</a>
                 <a href="viewhelp.php">HELP</a>

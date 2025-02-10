@@ -293,12 +293,12 @@ if (!empty($search)) {
             if (fullDesc.style.display === "none" || fullDesc.style.display === "") {
                 fullDesc.style.display = "block"; 
                 shortDesc.style.display = "none"; 
-                mangaItem.style.height = "auto"; /* Biarkan tinggi menyesuaikan */
+                mangaItem.style.height = "auto";
                 el.textContent = "Sembunyikan";
             } else {
                 fullDesc.style.display = "none"; 
                 shortDesc.style.display = "-webkit-box"; 
-                mangaItem.style.height = ""; /* Kembali ke ukuran default */
+                mangaItem.style.height = "";
                 el.textContent = "Lihat Selengkapnya";
             }
         }

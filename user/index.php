@@ -1,6 +1,12 @@
 <?php
-include './koneksi/config.php';
+include '../koneksi/config.php';
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -149,19 +155,29 @@ include './koneksi/config.php';
     </style>
 </head>
 <body>
-    <nav>
-        <div class="logo">
-            <img src="images/original.png" alt="Logo">
-            <span>MangaVERSE</span>
-        </div>
-        <div class="menu">
-            <a href="index.php">HOME</a>
-            <a href="manga.php">MANGA</a>
-            <a href="transaksi.php">BUY</a>
-            <a href="help.php">HELP</a>
-            <a href="login.php" style="background-color: #555; padding: 10px 15px; border-radius: 5px;">Register/Login</a>
-        </div>
-    </nav>
+
+
+<nav>
+    <div class="logo">
+        <img src="../images/original.png" alt="Logo">
+        <span>MangaVERSE</span>
+    </div>
+    <div class="menu">
+        <a href="index.php">HOME</a>
+        <a href="manga.php">MANGA</a>
+        <a href="transaksi.php">BUY</a>
+        <a href="help.php">HELP</a>
+
+        <?php
+        if (!empty($_SESSION['user_id'])) {
+            echo '<a href="profile.php" style="background-color: #555; padding: 10px 15px; border-radius: 5px;">Hi, ' . htmlspecialchars($_SESSION['user_email']) . '</a>';
+            echo '<a href="logout.php" style="background-color: red; padding: 10px 15px; border-radius: 5px;">Logout</a>';
+        } else {
+            echo '<a href="login.php" style="background-color: #555; padding: 10px 15px; border-radius: 5px;">Register/Login</a>';
+        }
+        ?>
+    </div>
+</nav>
 
     <div class="header">
         <h1>MangaVERSE</h1>
@@ -177,7 +193,7 @@ include './koneksi/config.php';
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo '<div class="card">';
-                echo '<img src="' . $row["image"] . '" alt="' . $row["title"] . '">';
+                echo '<img src="../' . $row["image"] . '" alt="' . $row["title"] . '">';
                 echo '<h3>' . $row["title"] . '</h3>';
                 echo '</div>';
             }

@@ -55,17 +55,17 @@ $result = $conn->query($sql);
 
     <table>
         <tr>
-            <th>No</th> <!-- Ganti ID dengan No Urut -->
+            <th>No</th>
             <th>Manga</th>
             <th>Nomor Halaman</th>
             <th>PDF</th>
             <th>Aksi</th>
         </tr>
         <?php 
-        $no = 1; // Mulai penomoran dari 1
+        $no = 1;
         while ($row = $result->fetch_assoc()) { ?>
         <tr>
-            <td><?php echo $no++; ?></td> <!-- Tampilkan nomor urut -->
+            <td><?php echo $no++; ?></td>
             <td><?php echo $row['title']; ?></td>
             <td><?php echo $row['page_number']; ?></td>
             <td><a href="<?php echo $row['pdf_url']; ?>" target="_blank">Lihat PDF</a></td>

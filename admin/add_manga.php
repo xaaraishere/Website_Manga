@@ -7,19 +7,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $price = $_POST['price'];
 
     if (!empty($_FILES["image"]["name"])) {
-        $target_dir = "../images/"; // Path folder tempat menyimpan gambar
+        $target_dir = "../images/";
         $image_name = time() . "_" . basename($_FILES["image"]["name"]);
         $target_file = $target_dir . $image_name;
-        $image_path = "images/" . $image_name; // Path untuk disimpan di database
+        $image_path = "images/" . $image_name;
 
-        // Buat folder jika belum ada
+
         if (!is_dir($target_dir)) {
             mkdir($target_dir, 0777, true);
         }
 
-        // Pindahkan file yang di-upload ke folder tujuan
+
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            // Simpan ke database
+
             $stmt = $conn->prepare("INSERT INTO manga (title, image, description, price) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("sssd", $title, $image_path, $description, $price);
 
@@ -208,8 +208,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button>Search</button>
         </div>
         <nav>
-                <a href="add_manga.php">ADD</a>
                 <a href="viewmanga.php">MANGA LIST</a>
+                <a href="viewread.php">LIST READ</a>
                 <a href="viewhelp.php">HELP</a>
         </nav>
         <div class="auth-buttons">

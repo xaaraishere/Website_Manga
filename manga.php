@@ -1,6 +1,16 @@
 <?php
 include './koneksi/config.php';
+
+$manga_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
+
+
+$sql = "SELECT pdf_url FROM manga_pages WHERE manga_id = $manga_id LIMIT 1";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+$pdf_url = $row ? $row["pdf_url"] : null;
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,87 +19,130 @@ include './koneksi/config.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manga List</title>
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: poppins, sans-serif;
-            background-color: #d9b4af;
-            color: #fff;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Navbar */
-        nav {
-            background-color: #333;
-            color: #fff;
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1e1e2f;
+            color: #f3f3f3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #101820;
+            padding: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            border-bottom: 3px solid #333333;
+            z-index: 1000;
+            height: 70px;
         }
 
         .logo {
             display: flex;
             align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
         }
 
         .logo img {
-            border-radius: 60%;
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
         }
 
-        .nav-container {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            justify-content: space-between;
+        .logo h1 {
+            font-size: 1.5rem;
+            color: #ffffff;
         }
 
         .search-bar {
-            flex: 1;
             display: flex;
-            justify-content: center;
+            align-items: center;
+            background-color: #20232a;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 5px 10px;
+            flex: 0.7;
         }
 
         .search-bar input {
-            width: 300px;
-            padding: 8px;
-            font-size: 14px;
+            background: none;
             border: none;
-            border-radius: 5px;
-            margin-right: 5px;
+            outline: none;
+            color: #ffffff;
+            padding: 5px;
+            width: 100%;
+        }
+
+        .search-bar input::placeholder {
+            color: #aaaaaa;
         }
 
         .search-bar button {
-            padding: 8px 12px;
-            background-color: #555;
-            color: white;
+            background-color: #333333;
             border: none;
             border-radius: 5px;
+            color: #ffffff;
+            padding: 5px 10px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         .search-bar button:hover {
-            background-color: #777;
+            background-color: #333333;
         }
 
-        .menu {
+        nav {
             display: flex;
-            gap: 15px;
             align-items: center;
+            gap: 15px;
+            padding: 10px 20px;
         }
 
-        .menu a {
+        nav a {
+            color: #ffffff;
             text-decoration: none;
-            color: #fff;
-            font-size: 16px;
-            padding: 8px 12px;
-            border-radius: 5px;
+            font-size: 1rem;
+            transition: color 0.3s;
         }
 
-        .menu a:hover {
-            background-color: #555;
+        nav a:hover {
+            color: #333333;
         }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+        }
+
+        .auth-buttons a {
+            background-color: #333333;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .auth-buttons a:hover {
+            background-color: #333333;
+        }
+
 
         /* Agar konten tidak tertutup navbar */
         .content {
@@ -135,19 +188,24 @@ include './koneksi/config.php';
             background-color: #fff;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 5);
             text-align: center;
             padding-bottom: 15px;
+            height: 250px; /* Menambah tinggi card */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .card img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
         }
 
         .card h3 {
-            font-size: 16px;
-            margin: 10px;
+            font-size: 20px;
+            margin: 20px;
             color: black;
         }
 
@@ -160,11 +218,11 @@ include './koneksi/config.php';
             display: block;
             width: 80%;
             padding: 10px;
-            margin: 5px auto;
+            margin: 25px auto;
             background-color: #333;
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 20px;
             cursor: pointer;
         }
 
@@ -181,34 +239,45 @@ include './koneksi/config.php';
 <body>
 
 <header>
-    <nav>
-        <div class="nav-container">
-            <!-- Logo -->
-            <div class="logo">
-                <img src="images/original.png" alt="Logo">
-                <span>MangaVERSE</span>
-            </div>
-
-            <!-- Search Bar di Tengah -->
-            <form class="search-bar" action="manga.php" method="GET">
-                <input type="text" name="search" placeholder="Cari manga...">
-                <button type="submit">Search</button>
-            </form>
-
-            <!-- Menu -->
-            <div class="menu">
-                <a href="index.php">HOME</a>
-                <a href="manga.php">MANGA</a>
-                <a href="transaksi.php">BUY</a>
-                <a href="help.php">HELP</a>
-                <a href="login.php" style="background-color: #555; padding: 10px 15px; border-radius: 5px;">Register/Login</a>
-            </div>
+        <div class="logo">
+            <img src="logo.png" alt="Logo">
+            <h1>MangaVERSE</h1>
         </div>
-    </nav>
-</header>
+        <div class="search-bar">
+    <form action="manga.php" method="GET" style="display: flex; width: 100%;">
+        <input type="text" name="search" placeholder="Search Manga" value="<?= htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : '') ?>">
+        <button type="submit">Search</button>
+    </form>
+</div>
+        <nav>
+            <a href="index.php">HOME</a>
+            <a href="manga.php">MANGA</a>
+            <a href="transaksi.php">BUY</a>
+            <a href="help.php">HELP</a>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.php">Login</a>
+            <a href="registrasi.php">Register</a>
+        </div>
+    </header>
 
+    <?php
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+
+        $sql = "SELECT * FROM manga WHERE title LIKE ?";
+        $stmt = $conn->prepare($sql);
+        $searchParam = "%$search%";
+        $stmt->bind_param("s", $searchParam);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        ?>
+
+        <hr /> 
+        <hr>
+        <hr>
+       
 <div class="content">
-    
 <div class="manga-list">
     <h2>List Of Manga</h2>
     </div>
@@ -216,7 +285,7 @@ include './koneksi/config.php';
         <?php
         $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-        // Query SQL
+
         if ($search) {
             $sql = "SELECT * FROM manga WHERE title LIKE '%$search%'";
         } else {

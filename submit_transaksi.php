@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $alamat = $_POST['alamat'];
     $manga_id = $_POST['manga_id'];
 
-    // Simpan transaksi ke database
+
     $stmt = $conn->prepare("INSERT INTO transaksi (nama, alamat, manga_id) VALUES (?, ?, ?)");
     $stmt->bind_param("ssi", $nama, $alamat, $manga_id);
 

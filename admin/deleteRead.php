@@ -1,5 +1,5 @@
 <?php
-include '../koneksi/config.php'; // Koneksi ke database
+include '../koneksi/config.php';
 
 if (!isset($_GET['id'])) {
     echo "<script>alert('ID tidak ditemukan.'); window.location.href='view_read.php';</script>";
@@ -8,7 +8,6 @@ if (!isset($_GET['id'])) {
 
 $page_id = $_GET['id'];
 
-// Ambil informasi file sebelum menghapus data dari database
 $query = "SELECT pdf_url FROM manga_pages WHERE id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $page_id);
@@ -26,7 +25,7 @@ if (file_exists($file_path)) {
     unlink($file_path);
 }
 
-// Hapus data dari database
+
 $query = "DELETE FROM manga_pages WHERE id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $page_id);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 09 Feb 2025 pada 15.16
+-- Waktu pembuatan: 10 Feb 2025 pada 02.15
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
 
@@ -20,6 +20,26 @@ SET time_zone = "+00:00";
 --
 -- Database: `mangaverse`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `admins`
+--
+
+CREATE TABLE `admins` (
+  `id` int(11) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `admins`
+--
+
+INSERT INTO `admins` (`id`, `email`, `password`, `created_at`) VALUES
+(1, '11@gmail.com', '$2y$10$i60J7K/18L.AkpqPiUGR.OfmDY3EdIF.ogcMoV9fDedtK80utdWeW', '2025-02-09 15:19:34');
 
 -- --------------------------------------------------------
 
@@ -118,7 +138,8 @@ CREATE TABLE `transaksi` (
 
 INSERT INTO `transaksi` (`id`, `nama`, `alamat`, `manga_id`, `tanggal_transaksi`) VALUES
 (1, 'Luiz Sahadan', 'testo', 1, '2025-02-09 12:57:25'),
-(2, 'tes', 'tes', 3, '2025-02-09 12:57:36');
+(2, 'tes', 'tes', 3, '2025-02-09 12:57:36'),
+(7, 'Luiz Sahadan', 'tester', 8, '2025-02-10 00:50:07');
 
 -- --------------------------------------------------------
 
@@ -128,21 +149,30 @@ INSERT INTO `transaksi` (`id`, `nama`, `alamat`, `manga_id`, `tanggal_transaksi`
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `email` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`) VALUES
-(1, 'test@gmail.com', '$2y$10$pD.h5P0jYiA1GMBpyDDyFuaQgwxgLi7vc09hLuSer4XmlbTagA4tq'),
-(2, '11@gmail.com', '$2y$10$Mf99kEciR423B59vNTo7RuE72iZItxmg5OC11mP3nzeXudKbYf.qm');
+INSERT INTO `users` (`id`, `email`, `username`, `password`, `created_at`) VALUES
+(1, 'user@gmail.com', 'xaara', '$2y$10$kU6Ecg6z8nnIrzZ3h5HigeQYuLAwseosspUhfgwyvAjApql4NJvqu', '2025-02-09 15:39:38'),
+(2, 'bisa@gmail.com', 'bisa', '$2y$10$NUbdbVk/yjbE2yyonuRZVus6vnE4n8DAZeKP1g9XRtUOGJJa1zKjG', '2025-02-09 16:25:50');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indeks untuk tabel `admins`
+--
+ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indeks untuk tabel `feedback`
@@ -182,6 +212,12 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT untuk tabel `admins`
+--
+ALTER TABLE `admins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT untuk tabel `feedback`
 --
 ALTER TABLE `feedback`
@@ -203,7 +239,7 @@ ALTER TABLE `manga_pages`
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`

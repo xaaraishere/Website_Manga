@@ -141,10 +141,11 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            text-align: center;
         }
         .menu a {
             display: block;
-            background: #28a745;
+            background:rgb(0, 0, 0);
             color: white;
             text-decoration: none;
             padding: 15px;
@@ -153,7 +154,7 @@
             transition: 0.3s;
         }
         .menu a:hover {
-            background: #218838;
+            background:rgb(24, 25, 56);
         }
     </style>
 </head>
@@ -169,8 +170,9 @@
             <button>Search</button>
         </div>
         <nav>
-                <a href="add_manga.php">ADD</a>
+                <a href="index.php">HOME</a>
                 <a href="viewmanga.php">MANGA LIST</a>
+                <a href="viewread.php">LIST READ</a>
                 <a href="viewhelp.php">HELP</a>
         </nav>
         <div class="auth-buttons">
@@ -182,5 +184,11 @@
 <body>
 <div class="container">
     <h1>Admin Panel</h1>
+    <br>
+    <div class="menu">
+        <a href="viewtransaksi.php">TRANSAKSI</a>
+        <a href="viewmanga.php">MANGA LIST</a>
+        <a href="viewread.php">READ LIST</a>
+        <a href="viewhelp.php">HELP</a>
 </body>
 </html>

@@ -1,22 +1,19 @@
 <?php
-include './koneksi/config.php';
+include '../koneksi/config.php';
 
-$manga_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
-
-
-$sql = "SELECT pdf_url FROM manga_pages WHERE manga_id = $manga_id LIMIT 1";
+$sql = "SELECT transaksi.id, transaksi.nama, transaksi.alamat, manga.title, transaksi.tanggal_transaksi 
+        FROM transaksi 
+        JOIN manga ON transaksi.manga_id = manga.id 
+        ORDER BY transaksi.tanggal_transaksi DESC";
 $result = $conn->query($sql);
-$row = $result->fetch_assoc();
-$pdf_url = $row ? $row["pdf_url"] : null;
-
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>READ MANGA</title>
+    <title>View Transaksi</title>
     <style>
         * {
             margin: 0;
@@ -141,40 +138,27 @@ $pdf_url = $row ? $row["pdf_url"] : null;
         .auth-buttons a:hover {
             background-color: #333333;
         }
-
-        .content-wrapper {
-            margin-top: 100px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            color: black;
         }
-
-        .comic-container {
-            width: 100%;
-            max-width: 900px;
-            background-color: #2e2e44;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
+        table, th, td {
+            border: 1px solid black;
+            padding: 10px;
         }
-
-        iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-        }
-
-        footer {
-            margin-top: 20px;
-            color: #7a7a9a;
-            font-size: 0.9rem;
+        th {
+            background: #333;
+            color: white;
         }
     </style>
 </head>
+<header>
 
-    <header>
         <div class="logo">
-            <img src="logo.png" alt="Logo">
+            <img src="../images/logo.png" alt="Logo">
             <h1>MangaVERSE</h1>
         </div>
         <div class="search-bar">
@@ -182,40 +166,39 @@ $pdf_url = $row ? $row["pdf_url"] : null;
             <button>Search</button>
         </div>
         <nav>
-            <a href="index.php">Home</a>
-            <a href="manga.php">Manga</a>
-            <a href="transaksi.php">BUY</a>
-            <a href="help.php">Help</a>
+                <a href="index.php">HOME</a>
+                <a href="viewmanga.php">MANGA LIST</a>
+                <a href="viewread.php">LIST READ</a>
+                <a href="viewhelp.php">HELP</a>
         </nav>
         <div class="auth-buttons">
-            <a href="login.php">Login</a>
-            <a href="registrasi.php">Register</a>
+            <a href="./login.php">Login</a>
         </div>
     </header>
+    <br><br><br><br>
 
-    <?php
-        $search = isset($_GET['search']) ? $_GET['search'] : '';
-
-        if ($search) {
-            $sql = "SELECT * FROM manga WHERE title LIKE '%$search%'";
-        } else {
-            $sql = "SELECT * FROM manga";
-        }
-        ?>
-
-    <body>
-        <div class="content-wrapper">
-           
-    <div class="comic-container">
-        <?php
-        if ($pdf_url) {
-            echo '<iframe src="' . $pdf_url . '"></iframe>';
-        } else {
-            echo "<p>No PDF available.</p>";
-        }
-        $conn->close();
-        ?>
-    </div>
-    </div>
+<br>
+<body>
+    <h1>Daftar Transaksi</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Alamat</th>
+            <th>Manga</th>
+            <th>Tanggal Transaksi</th>
+        </tr>
+        <?php while ($row = $result->fetch_assoc()) { ?>
+        <tr>
+            <td><?php echo $row['id']; ?></td>
+            <td><?php echo $row['nama']; ?></td>
+            <td><?php echo $row['alamat']; ?></td>
+            <td><?php echo $row['title']; ?></td>
+            <td><?php echo $row['tanggal_transaksi']; ?></td>
+        </tr>
+        <?php } ?>
+    </table>
 </body>
 </html>
+
+<?php $conn->close(); ?>
