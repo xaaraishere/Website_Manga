@@ -14,8 +14,8 @@
         <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non urna vitae libero bibendum tincidunt.</p>
         
         <div class="actions">
-            <a href="read_manga.php?id=1" class="btn">Read Manga</a>
-            <a href="buy_manga.php?id=1" class="btn">Buy Manga</a>
+            <a href="listmanga.php?id=1" class="btn">Read Manga</a>
+            <a href="transaksi.php?id=1" class="btn">Buy Manga</a>
         </div>
     </div>
 </body>
