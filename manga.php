@@ -299,7 +299,7 @@ $pdf_url = $row ? $row["pdf_url"] : null;
                 echo '<div style="background-color: rgba(0, 0, 0, 0.5); padding: 10px;">';
                 echo '<h3 style="color: white;">' . $row["title"] . '</h3>';
                 echo '<p style="color: white;"><strong>IDR ' . number_format($row["price"], 0, ',', '.') . '</strong></p>';
-                echo '<button class="zoom-button" onclick="window.location.href=\'beli.php?id=' . $row["id"] . '\'">Beli</button>';
+                echo '<button class="zoom-button" onclick="window.location.href=\'transaksi.php?id=' . $row["id"] . '\'">Beli</button>';
                 echo '<button class="zoom-button" onclick="window.location.href=\'listmanga.php?id=' . $row["id"] . '\'">Baca</button>';
 
                 echo '</div>';

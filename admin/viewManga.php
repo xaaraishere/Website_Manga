@@ -207,6 +207,8 @@ if (isset($_GET['delete'])) {
     <div style="text-align: center;">
         <h1>WELCOME KING, Admin</h1>
         </div>
+        <a href="add_read.php" style="background: green; padding: 10px; color: white; border-radius: 5px;">Tambah Halaman</a>
+
 
 <table>
     <tr>
